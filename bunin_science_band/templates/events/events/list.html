@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load events_tags %}
+
+{% block title %}События{% endblock %}
+
+{% block content %}
+    <h1>СОБЫТИЯ</h1>
+
+    <div class="news-search"><a class="btn btn-main" role="button" href="{% url "events:events_search"  %}">Поиск по Событиям</a></div>
+
+    {% if tag %}
+    <h2>События с тегом: "{{ tag.name }}"</h2>
+{% endif %}
+
+{% for event in events %}
+     <!-- START Событие -->
+
+        <div class="card my-2 d-flex">
+            <div class="card-body">
+              <h2 class="card-title">
+                <a href="{{ event.get_absolute_url }}">{{ event.title }}</a>
+              </h2>
+              <p class="card-text"> {{ event.body|markdown|truncatewords_html:30 }}</p>
+              <p class="card-text">
+                <small class="text-body-secondary">
+                Теги:
+                    {% for tag in event.tags.all %}
+                    <a href="{% url "events:events_list_by_tag" tag.slug %}">
+                        {{ tag.name }}
+                      </a>
+                      {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+              </small>
+            </p>
+              <p class="card-text">
+                <small class="text-body-secondary"> 
+                Опубликовано {{ event.publish }} 
+              </small>
+            </p>
+
+            {% if event.images %}
+            {% with event.images.all|first as image%}
+            <img class="card-img-top" src="{{ image.image.url }}" alt="{{ event.title }}">
+            {% endwith %}
+            {% endif %}
+            <div class="card-more-info"><a class="btn btn-main" role="button" href="{{ event.get_absolute_url }}">Подробнее</a></div>
+          </div>
+          </div>
+
+
+    <!-- END Событие -->
+    {% endfor %}
+    {% include "../../pagination.html" with page=events %}
+{% endblock %}
+
+

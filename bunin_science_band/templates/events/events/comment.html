@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Комментарий{% endblock %}
+
+
+
+{% block content %}
+  {% if comment %}
+    <h2>Ваш комментарий был добавлен</h2>
+    <p><a href="{{ events.get_absolute_url }}">Вернуться к Событию</a></p>
+  {% else %}
+    {% include "events/events/includes/comment_form.html" %}
+  {% endif %}
+{% endblock %}

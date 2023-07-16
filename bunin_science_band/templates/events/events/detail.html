@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load events_tags %}
+{% load static %}
+
+{% block title %}{{ events.title }}{% endblock %}
+
+{% block content %}
+
+
+<h1>{{ events.title }}</h1>
+<p>Просмотры : {{events.total_views}}</p>
+<p class="date">
+  Теги: 
+  {% for tag in events.tags.all %}
+                <a href="{% url "events:events_list_by_tag" tag.slug %}">
+                    {{ tag.name }}
+                </a>
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %} 
+</p>
+{% if events.members %}
+<p class="date">
+  Организаторы:
+  {% for member in events.members.all %}
+  <a href="{{ member.get_absolute_url }}">{{ member.surname }} {{ member.name }} </a>
+  {% endfor %}
+</p>
+{% endif %}
+<p class="date">
+  Опубликовано {{ events.publish }} 
+</p>
+
+
+{{ events.body|markdown }}
+
+{% if events.document %}
+<div class="download-card">
+  <img src="{% static 'img/download-ico.png' %}" alt="Download Icon" class="download-icon">
+  <h3 class="download-title">{{ events.document|filename }}</h3>
+  <a class="btn btn-main" href="{{ events.document.url }}" download>Скачать</a>
+</div>
+
+{% endif %}
+
+{% if events.images %}
+{% with events.images.all as event_images %}
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="false">
+  <div class="carousel-indicators">
+
+    {% for image in event_images %}
+
+    <button type="button" 
+    data-bs-target="#carouselExampleIndicators" 
+    data-bs-slide-to="{{ forloop.counter }}" 
+    class="active" aria-current="true"
+    aria-label="Slide {{ forloop.counter }}"></button>
+
+    {% endfor %}
+
+  </div>
+  <div class="carousel-inner">
+    {% for image in event_images %}
+    <div class="carousel-item img-fluid active">
+      <img class="w-100 d-block" src="{{ image.image.url }}" alt="{{ events.title }}">
+    </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+{% endwith %}
+{% endif %}
+
+<div>
+
+<p>
+<a class="btn btn-main" href="{% url "events:events_share" events.id %}">
+  Поделиться новостью
+</a>
+</p>
+
+<p>
+{% if user.is_authenticated %}
+
+<span id="like" style="font-size:200%;color:#da166c;" data-resource="events" data-event-id="{{ events.id }}" >&hearts;</span>
+{% else %}
+<a class="btn btn-main" href="{% url 'account:login' %}">Log-in чтобы оценить запись!</a><br>
+<span style="font-size:200%;color:#da166c;">&hearts;</span>
+{% endif %}
+<strong id="like-count" class="text-secondary">{{ events.number_of_likes }} </strong>
+</p>
+
+</div>
+
+<div class="detail-news-similar">
+<h2 class="detail-news-similar-header">Похожие События</h2>
+<ul class="aside-icon">
+{% for events in similar_events %}
+<li class="latest">
+  <a href="{{ events.get_absolute_url }}">{{ events.title }}</a>
+</li>
+{% empty %}
+Нет похожих Событий.
+{% endfor %}
+</ul>
+</div>
+
+{% with comments.count as total_comments %}
+  <h2 class="detail-news-comment-header">
+    {{ total_comments }} {{ total_comments|ru_plural:"комментарий,комментария, комментариев" }}
+  </h2>
+{% endwith %}
+{% for comment in comments %}
+<div class="comment">
+  <p class="info">
+    {{ comment.name }}
+    {{ comment.created }}
+    {% if request.user.is_superuser %}
+  <a href="{% url "events:events_comment_delete"  comment.id %}">X</a>
+  {% endif %}
+  </p>
+  {{ comment.body|linebreaks }}
+
+</div>
+{% empty %}
+<p>Нет комментариев</p>
+{% endfor %}
+{% if request.user.is_authenticated %}
+{% include "events/events/includes/comment_form.html" %}
+{% else %}
+<a href="{% url "account:login" %}">Войдите</a> или <a href="{% url "account:register" %}">зарегистрируйтесь</a> чтобы оставлять комментарии.
+{% endif %}
+
+{% endblock %}
+

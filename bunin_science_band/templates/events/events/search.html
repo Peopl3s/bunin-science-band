@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load events_tags %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+  {% if query %}
+    <h1>События, содержащие "{{ query }}"</h1>
+    <h3>
+      {% with results.count as total_results %}
+      Найдено результатов {{ total_results }} 
+      {{ total_results|pluralize }}
+      {% endwith %}
+    </h3>
+    {% for post in results %}
+      <h4>
+        <a href="{{ post.get_absolute_url }}">
+          {{ post.title }}
+        </a>
+      </h4>
+      {{ post.body|markdown|truncatewords_html:12 }}
+    {% empty %}
+      <p>Нет результатов по запросу.</p>
+      {% endfor %}
+      <p><a href="{% url "events:events_search" %}">Искать снова</a></p>
+    {% else %}
+      <h1>Поиск по событиям</h1>
+      <form method="get">
+        {{ form.as_p }}
+        <input class="btn btn-main" type="submit" value="Поиск">
+      </form>
+    {% endif %}
+  {% endblock %}

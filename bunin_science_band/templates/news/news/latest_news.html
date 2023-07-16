@@ -1,0 +1,7 @@
+<ul class="aside-icon">
+    {% for news in latest_news %}
+      <li class="latest">
+        <a href="{{ news.get_absolute_url }}">{{ news.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load members_tags %}
+
+{% block title %}Участники сообщества{% endblock %}
+
+{% block content %}
+    <h1>УЧАСТНИКИ СООБЩЕСТВА</h1>
+    {% if tag %}
+        <h2>Участники с научными интересами: "{{ tag.name }}"</h2>
+    {% endif %}
+    {% for member in members %}
+    <div class="member">
+    <div class="member-info">
+    <h2>
+        <a href="{{ member.get_absolute_url }}">
+        {{ member.surname }} {{ member.name }}  {{ member.midname  }}
+        </a>
+    </h2>
+    <p class="tags">
+        Теги:
+        {% for tag in member.tags.all %}
+        <a href="{% url "members:members_list_by_tag" tag.slug %}">
+            {{ tag.name }}
+          </a>
+          {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </p>
+    <p>Cфера научных интересов: {{ member.science_fields }} </p>  
+    <p>Степень/должность: {{ member.rank }} </p> 
+    Сведения: {{ member.description |markdown|truncatewords_html:30 }}
+    <div class="member-contact">
+        <p><span>Телефон: </span>{{ member.phone }}</p>
+        <p>Почта: {{ member.email }}</p>
+        <p>Социальные сети: {{ member.socials }}</p>
+    </div>
+</div>
+<div class="member-profile-photo">
+    {% if member.image %}
+    <img src="{{ member.image.url }}" alt="{{ member.surname }}">
+    {% endif %}
+</div>
+</div>
+    {% endfor %}
+    {% include "../../pagination.html" with page=members %}
+{% endblock %}

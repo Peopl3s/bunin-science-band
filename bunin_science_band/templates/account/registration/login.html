@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block content %}
+  <h1>Log-in</h1>
+  {% if form.errors %}
+    <p>
+      Ваше имя пользователя или пароль неправильные.
+      Попробуйте ещё раз.
+    </p>
+  {% else %}
+    <p>
+      Пожалуйста, выполните вход через эту форму:
+      <a href="{% url "account:register" %}">регистрация здесь</a>.
+    </p>
+  {% endif %}
+  <div class="login-form form-group">
+    <form class="form" action="{% url 'account:login' %}" method="POST">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <p><input class="btn btn-main" type="submit" value="Log-in"></p>
+    </form>
+  </div>
+  <div class="social">
+  </div>
+  <div>
+    <a href="{% url "account:password_reset" %}">
+      Забыл пароль?
+    </a>
+  </div>
+{% endblock %}

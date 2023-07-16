@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load members_tags %}
+
+{% block title %}{{ members.surname }}{% endblock %}
+
+{% block content %}
+
+<div class="member-detail">
+  <div class="member-detail-main">
+  <h1>{{ members.surname }} {{ members.name }} {{ members.midname }}</h1>
+  <p class="date">
+    Опубликовано {{ members.publish }} 
+  </p>
+  <p class="tags">
+    Теги:
+    {% for tag in members.tags.all %}
+    <a href="{% url "members:members_list_by_tag" tag.slug %}">
+        {{ tag.name }}
+      </a>
+      {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+
+  <p>Cфера научных интересов: {{ members.science_fields }} </p>  
+  <p>Степень/должность: {{ members.rank }} </p> 
+
+  <div class="member-contact">
+      <p><span>Телефон: </span>{{ members.phone }}</p>
+      <p>Почта: {{ members.email }}</p>
+      <p>Социальные сети: {{ members.socials }}</p>
+  </div>
+
+<div class="member-profile-photo-detail">
+    {% if members.image %}
+    <img src="{{ members.image.url }}" alt="{{ members.surname }}"/>
+    {% endif %}
+</div>
+
+</div>
+
+<div class="member-desc">Сведения: {{ members.description |markdown }}</div>
+
+</div>
+
+
+  
+
+
+
+<h2>Похожие участники</h2>
+{% for member in similar_members %}
+  <p>
+    <a href="{{ member.get_absolute_url }}">{{ member.surname }}</a>
+  </p>
+  {% empty %}
+  Нет похожих участников.
+{% endfor %}
+{% endblock %}

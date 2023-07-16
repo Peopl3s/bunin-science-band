@@ -1,0 +1,8 @@
+<div class="add-comment-block">
+<h2 class="detail-news-comment-header">Добавить новый комментарий</h2>
+<form action="{% url "news:news_comment" news.id %}" method="post">
+  {{ form.as_p }}
+  {% csrf_token %}
+  <p><input class="btn btn-main" type="submit" value="Отправить"></p>
+</form>
+</div>

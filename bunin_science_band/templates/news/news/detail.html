@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load news_tags %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block content %}
+  <h1>{{ news.title }}</h1>
+  <p>Просмотры : {{news.total_views}}</p>
+  <p class="date">
+    Опубликовано {{ news.publish }} пользователем {{ news.author }}
+  </p>
+  {{ news.body|markdown }}
+  {% if news.images %}
+    {% for image in news.images.all %}
+    <img class="detail" src="{{ image.image.url }}" alt="{{ news.title }}">
+    {% endfor %}
+    {% endif %}
+
+<div>
+
+<p>
+  <a class="btn btn-main" href="{% url "news:news_share" news.id %}">
+    Поделиться новостью
+  </a>
+</p>
+
+<p>
+{% if user.is_authenticated %}
+<!--<a href="{% url 'news:news_like' news.id %}" style="font-size:200%;color:#da166c;" >&hearts;</a>-->
+<span id="like" style="font-size:200%;color:#da166c;" data-resource="news" data-event-id="{{ news.id }}" >&hearts;</span>
+{% else %}
+<a class="btn btn-main" href="{% url 'account:login' %}">Log in чтобы оценить запись !</a><br>
+<span style="font-size:200%;color:#da166c;">&hearts;</span>
+{% endif %}
+<strong id="like-count" class="text-secondary">{{ news.number_of_likes }} </strong>
+</p>
+
+</div>
+
+<div class="detail-news-similar">
+<h2 class="detail-news-similar-header">Похожие новости</h2>
+<ul class="aside-icon">
+{% for news in similar_news %}
+  <li class="latest">
+    <a href="{{ news.get_absolute_url }}">{{ news.title }}</a>
+  </li>
+  {% empty %}
+  Нет похожих новостей.
+{% endfor %}
+</ul>
+</div>
+
+  {% with comments.count as total_comments %}
+    <h2 class="detail-news-comment-header">
+      {{ total_comments }} {{ total_comments|ru_plural:"комментарий,комментария, комментариев" }}
+    </h2>
+  {% endwith %}
+  {% for comment in comments %}
+  <div class="comment">
+    <p class="info">
+      {{ comment.name }}
+      {{ comment.created }}
+      {% if request.user.is_superuser %}
+    <a href="{% url "news:news_comment_delete"  comment.id %}">X</a>
+    {% endif %}
+    </p>
+    {{ comment.body|linebreaks }}
+
+  </div>
+{% empty %}
+  <p>Нет комментариев</p>
+{% endfor %}
+{% if request.user.is_authenticated %}
+{% include "news/news/includes/comment_form.html" %}
+{% else %}
+<a href="{% url "account:login" %}">Войдите</a> или <a href="{% url "account:register" %}">зарегистрируйтесь</a> чтобы оставлять комментарии.
+{% endif %}
+{% endblock %}

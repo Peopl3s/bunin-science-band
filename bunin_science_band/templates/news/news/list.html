@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load news_tags %}
+
+{% block title %}Новости{% endblock %}
+{% block content %}
+    <h1>НОВОСТИ</h1>
+    <div class="news-search"><a class="btn btn-main" role="button" href="{% url "news:news_search"  %}">Поиск по новостям</a></div>
+
+    {% if tag %}
+        <h2>Новости с тегом: "{{ tag.name }}"</h2>
+    {% endif %}
+
+    {% for ns in news %}
+     <!-- START Новость -->
+
+        <div class="card my-2 d-flex">
+            <div class="card-body">
+              <h2 class="card-title">
+                <a href="{{ ns.get_absolute_url }}">{{ ns.title }}</a>
+              </h2>
+              <p class="card-text"> {{ ns.body|markdown|truncatewords_html:30 }}</p>
+              <p class="card-text">
+                <small class="text-body-secondary">
+                Tags:
+                {% for tag in ns.tags.all %}
+                <a href="{% url "news:news_list_by_tag" tag.slug %}">
+                    {{ tag.name }}
+                </a>
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </small>
+            </p>
+              <p class="card-text">
+                <small class="text-body-secondary"> 
+                Published {{ ns.publish }} by {{ ns.author }}
+              </small>
+            </p>
+
+            {% if ns.images %}
+            {% with ns.images.all|first as image%}
+            <img class="card-img-top" src="{{ image.image.url }}" alt="{{ ns.title }}">
+            {% endwith %}
+            {% endif %}
+            <div class="card-more-info"><a class="btn btn-main" role="button" href="{{ ns.get_absolute_url }}">Подробнее</a></div>
+          </div>
+          </div>
+    <!-- END Новость -->
+    {% endfor %}
+
+
+    {% include "../../pagination.html" with page=news %}
+{% endblock %}

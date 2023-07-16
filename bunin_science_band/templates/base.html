@@ -1,0 +1,141 @@
+{% load news_tags %}
+{% load static %}
+{% load cache %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta property="og:image" content="{% static "img/logo.png" %}" />
+  <meta property="og:image:width" content="300" />
+  <meta property="og:image:height" content="300" />
+  <meta name="description" property="og:description" content="Совет молодых учёных ЕГУ">
+  <meta name="keywords" content="егу, совет молодых учных, совет молодых учёных егу, егу им. И.А. Бунина">
+  <meta name="author" content="PyLounge">
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet"/>
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+  <link href="{% static "css/main.css" %}" rel="stylesheet">
+</head>
+<body>
+
+
+
+<div class="container-fluid p-0 sticky-top">
+  <div class="row">
+    <!-- HEADER -->
+    <header class="col-xs-12">
+      <nav class="navbar navbar-light navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="{% url "home:index" %}">
+            <img src="{%  static 'img/logo.png' %}" alt="" class="nav-logo"
+            class="d-inline-block align-text-center"/>
+            Совет молодых учёных 
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключатель навигации">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url "members:members_list" %}">Участники</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "news:news_list" %}">Новости</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "events:events_list" %}">События</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "contacts:contacts" %}">Контакты</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Журнал</a>
+              </li>
+            </ul>
+          </div>
+          <span class="nav-isauth">
+          {% if request.user.is_authenticated %}
+            {{ request.user.first_name|default:request.user.username }},
+            <a href="{% url "account:logout" %}">Выйти</a>
+          {% else %}
+            <a href="{% url "account:login" %}">Войти</a>
+          {% endif %}
+        </span>
+        </div>
+      </nav>
+    </header>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <section class="col-xs-12">
+      <div class="row">
+        <!-- MAIN -->
+        <main class="col-md-8 col-lg-9">
+            {% block content %}
+            {% endblock %}
+        </main>
+        <!-- ASIDE -->
+        <div class="col-md-4 col-lg-3">
+          <div class="row">
+            {% cache 30 aside %} 
+            <!-- ASIDE #1 -->
+            <aside class="col-sm-6 col-md-12">
+              <div>
+                <h2>Молодые ученые представляют</h2>
+                <p>
+                Новостей на сайте уже: {% total_news %}
+                </p>
+                <p>
+                  <a href="{% url "news:news_feed" %}"> 
+                    Подпишись на наш RSS-фид
+                  </a>
+                </p>
+                <h3>Последние новости</h3>
+                {% show_latest_news 3 %}
+                <h3>Наиболее обсуждаемые</h3>
+                {% get_most_commented_news as most_commented_news %}
+                <ul class="aside-icon">
+                  {% for news in most_commented_news %}
+                  <li class="aside-icon-comment">
+                    <a href="{{ news.get_absolute_url }}">{{ news.title }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </aside>
+            {% endcache %}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+
+</div>
+
+<div class="container-fluid p-0">
+    <!-- FOOTER -->
+    <footer class="col-xs-12">
+      © 2023 Елецкий государственный университет. Все права защищены.
+      При использовании материалов сайта ссылка обязательна.
+      
+      Россия, ул. Коммунаров, 28, Елец, Липецкая обл., 399770.
+    </footer>
+  </div>
+
+
+
+  
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
