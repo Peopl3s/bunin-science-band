@@ -1,5 +1,5 @@
-# bunin-science-band
-Сайт Совета Молодых Учёных *ЕГУ им. И.А. Бунина*
+# bunin-science-band <img src="https://github.com/Peopl3s/bunin-science-band/blob/main/screens/logo.png" style="with:45px; height:45px;"/>
+Сайт Совета Молодых Учёных [*ЕГУ им. И.А. Бунина*](https://elsu.ru/)
 
 ### Запуск
 ```bash
@@ -20,7 +20,7 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 - [x] Логирование в файл, на почту и через [телеграм бота](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/utils/telegrambot_handler.py)
 - [x] [Атомарность транзакций базы данныx](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/utils/core.py)
 - [x] Возможность поделиться новость/событием по электронной почте (на основе SMTP от Mail.ru, асинхронность за счёт [Celery](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/bunin_science_band/celery.py))
-- [x] Подготовлены docker-compose файлы для развёртывания в производственной и локлаьной среде
+- [x] Подготовлены [docker-compose](https://github.com/Peopl3s/bunin-science-band/blob/main/docker-compose.yml) файлы для развёртывания в производственной и локальной среде
 - [x] Регистрация и авторизации пользователей, смена/восстановление пароля учётной записи
 - [x] Система комметариев
 - [x] Лайки (fetch JS)
