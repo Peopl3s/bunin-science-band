@@ -19,8 +19,9 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 - [x] [Перехват исключений через middleware](https://github.com/Peopl3s/bunin-science-band/blob/74b91d807627435b3144c9e6ecfe1e07edaad626/bunin_science_band/utils/middleware.py#L1)
 - [x] Логирование в файл, на почту и через [телеграм бота](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/utils/telegrambot_handler.py)
 - [x] [Атомарность транзакций базы данныx](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/utils/core.py)
-- [x] Возможность поделиться новость/событием по электронной почте (на основе SMTP от Mail.ru, асинхронность за счёт [Celery](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/bunin_science_band/celery.py))
+- [x] Возможность поделиться новость/событием по электронной почте (на основе SMTP от Mail.ru, асинхронность за счёт [Celery](https://github.com/Peopl3s/bunin-science-band/blob/main/bunin_science_band/bunin_science_band/celery.py) и очереди задач на RabbitMQ)
 - [x] Подготовлены [docker-compose](https://github.com/Peopl3s/bunin-science-band/blob/main/docker-compose.yml) файлы для развёртывания в производственной и локальной среде
+- [x] Кэширование (redis)
 - [x] Регистрация и авторизации пользователей, смена/восстановление пароля учётной записи
 - [x] Система комметариев
 - [x] Лайки (fetch JS)
@@ -34,7 +35,15 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 - [x] RSS-фид
 - [x] Карта сайта и robots.txt
 - [x] Код покрыт теста (Django test tools)
-- [x] В репозитории настроен Github Actions для Black Formatter и Mypy 
+- [x] В репозитории настроен Github Actions для Black Formatter и Mypy
+
+### Технологии
++ Backend
+  - :heavy_check_mark: Django4 :heavy_check_mark: PostgreSQL :heavy_check_mark: Celery :heavy_check_mark: RabbitMQ :heavy_check_mark: Redis
++ Frontend
+  - 🧷 HTML5/CSS3 🧷 Bootstrap5 🧷 Django Templates 🧷 JavaScript 🧷 Material Design UI Kit
++ Deployment
+  - 📌 Docker Compose 📌 Nginx 📌 Gunicorn 
 
 ### Все скриншоты [тут](https://github.com/Peopl3s/bunin-science-band/tree/main/screens)
 ![alt text](https://github.com/Peopl3s/bunin-science-band/blob/main/screens/index.PNG)
