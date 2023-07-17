@@ -39,7 +39,7 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 
 ### 👨‍💻 Технологии
 + Backend
-  - :heavy_check_mark: Django4 :heavy_check_mark: PostgreSQL :heavy_check_mark: Celery :heavy_check_mark: RabbitMQ :heavy_check_mark: Redis
+  - :heavy_check_mark: Python3 :heavy_check_mark: Django4 :heavy_check_mark: PostgreSQL :heavy_check_mark: Celery :heavy_check_mark: RabbitMQ :heavy_check_mark: Redis
 + Frontend
   - 🧷 HTML5/CSS3 🧷 Bootstrap5 🧷 Django Templates 🧷 JavaScript 🧷 Material Design UI Kit
 + Deployment
