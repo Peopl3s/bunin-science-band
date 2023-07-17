@@ -1,14 +1,14 @@
 # bunin-science-band <img src="https://github.com/Peopl3s/bunin-science-band/blob/main/screens/logo.png" style="with:45px; height:45px;"/>
 Сайт Совета Молодых Учёных [*ЕГУ им. И.А. Бунина*](https://elsu.ru/)
 
-### Запуск
+### 👾 Запуск
 ```bash
 docker compose up
 docker compose exec web python /code/bunin_science_band/manage.py migrate
 docker compose exec web python /code/bunin_science_band/manage.py createsuperuser
 ```
 
-### Что реализовано
+### ⬇️ Что реализовано
 - [x] Страницы:
   - - [x] новости
   - - [x] события (мероприятия), проводимые сообществом
@@ -37,7 +37,7 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 - [x] Код покрыт теста (Django test tools)
 - [x] В репозитории настроен Github Actions для Black Formatter и Mypy
 
-### Технологии
+### 👨‍💻 Технологии
 + Backend
   - :heavy_check_mark: Django4 :heavy_check_mark: PostgreSQL :heavy_check_mark: Celery :heavy_check_mark: RabbitMQ :heavy_check_mark: Redis
 + Frontend
@@ -45,5 +45,5 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 + Deployment
   - 📌 Docker Compose 📌 Nginx 📌 Gunicorn 
 
-### Все скриншоты [тут](https://github.com/Peopl3s/bunin-science-band/tree/main/screens)
+### 🖌️ Все скриншоты [тут](https://github.com/Peopl3s/bunin-science-band/tree/main/screens)
 ![alt text](https://github.com/Peopl3s/bunin-science-band/blob/main/screens/index.PNG)
