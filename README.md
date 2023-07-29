@@ -34,7 +34,7 @@ docker compose exec web python /code/bunin_science_band/manage.py createsuperuse
 - [x] Блок с последними и наиболее обсуждаемыми новостями
 - [x] RSS-фид
 - [x] Карта сайта и robots.txt
-- [x] Код покрыт теста (Django test tools)
+- [x] Код покрыт тестами (Django test tools)
 - [x] В репозитории настроен Github Actions для Black Formatter и Mypy
 
 ### 👨‍💻 Технологии
